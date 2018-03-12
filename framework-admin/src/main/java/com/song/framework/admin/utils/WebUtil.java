@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
+import com.song.framework.dao.module.AdminUser;
 public class WebUtil {
 	private static Logger logger = Logger.getLogger(WebUtil.class);
 	
@@ -121,47 +122,42 @@ public class WebUtil {
     }
     
 
-    public static boolean isLogin(HttpServletRequest request){
-		HttpSession session = getSession(request);
-		if(session == null || session.getAttribute("userId") == null){
+    public static boolean isLogin(HttpSession session){
+		if(session == null || session.getAttribute("user") == null){
 			return false;
 		}
 		return true;
 	}
-
-    private static HttpSession getSession(HttpServletRequest request){
-		return request.getSession();
-	}
+    
+    public static AdminUser getUser(HttpSession session){
+    	if(session != null && session.getAttribute("user") != null){
+			return (AdminUser) session.getAttribute("user");
+		}
+    	return null;
+    }
 
     public static void logOut(HttpSession session){
 		if(session!=null){
-			session.removeAttribute("userDto");
+			session.removeAttribute("user");
 		}
 	}
     
-    public static Long getUserId(HttpServletRequest request){
-		HttpSession session = getSession(request);
-		if(session != null && session.getAttribute("userId") != null){
-			return Long.valueOf( session.getAttribute("userId")+"");
+    public static Long getUserId(HttpSession session){
+		if(session != null && session.getAttribute("user") != null){
+			AdminUser user = (AdminUser) session.getAttribute("user");
+			return user.getId();
 		}
 		return null;
 	}
     
-    public static String getUserName(HttpServletRequest request){
-		HttpSession session = getSession(request);
-		if(session != null && session.getAttribute("userName") != null){
-			return (String) session.getAttribute("userName");
+    public static String getUserName(HttpSession session){
+		if(session != null && session.getAttribute("user") != null){
+			AdminUser user = (AdminUser) session.getAttribute("user");
+			return user.getUserName();
 		}
 		return null;
 	}
     
-    public static boolean isNeedChangePwd(HttpServletRequest request){
-		HttpSession session = getSession(request);
-		if(session == null || session.getAttribute("needChangePwd") == null){
-			return false;
-		}
-		return true;
-	}
     public static String getReqIpAddr(HttpServletRequest request) {
 	        String ip = request.getHeader("X-Real-IP");
 	        if (StringUtils.isNotEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {

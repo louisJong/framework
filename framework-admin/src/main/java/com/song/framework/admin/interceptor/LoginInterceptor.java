@@ -29,7 +29,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		if(request.getServletPath().contains("/login") || request.getServletPath().contains("/logout")){
 			return true;
 		}
-		if(!WebUtil.isLogin(request)){
+		if(!WebUtil.isLogin(request.getSession())){
 			JSONObject isLoginJson = new JSONObject();
 			JSONObject head = new JSONObject();
 			head.put("code", "9900");

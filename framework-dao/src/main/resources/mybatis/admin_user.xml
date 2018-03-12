@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding= "UTF-8" ?>        
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.song.framework.dao.AdminUserMapper">
+	<sql id="table"> hepet_admin_user </sql>
+	<resultMap id="BaseResultMap" type="com.song.framework.dao.module.AdminUser">
+        <id property="id" jdbcType="INTEGER" column="id"/>
+		<result property="userName" jdbcType="VARCHAR" column="user_name"/>
+		<result property="mobile" jdbcType="VARCHAR" column="mobile"/>
+		<result property="email" jdbcType="VARCHAR" column="email"/>
+		<result property="loginPwd" jdbcType="VARCHAR" column="login_pwd"/>
+		<result property="createUser" jdbcType="VARCHAR" column="create_user"/>
+		<result property="createTime" jdbcType="TIMESTAMP" column="create_time"/>
+		<result property="updateTime" jdbcType="TIMESTAMP" column="update_time"/>
+		<result property="status" jdbcType="TINYINT" column="status"/>
+    </resultMap>
+	
+	<sql id="columns">
+	    <![CDATA[
+        id ,user_name ,mobile ,email ,login_pwd ,create_user ,create_time ,update_time ,status 
+	    ]]>
+	</sql>
+	
+	<sql id="condition_sql">
+		<if test="id != null">
+		and id = #{id}
+		</if>
+		<if test="userName != null and userName.trim() != ''">
+		and user_name = #{userName}
+		</if>
+		<if test="mobile != null and mobile.trim() != ''">
+		and mobile = #{mobile}
+		</if>
+		<if test="email != null and email.trim() != ''">
+		and email = #{email}
+		</if>
+		<if test="loginPwd != null and loginPwd.trim() != ''">
+		and login_pwd = #{loginPwd}
+		</if>
+		<if test="createUser != null and createUser.trim() != ''">
+		and create_user = #{createUser}
+		</if>
+		<if test="createTimeBegin != null and createTimeBegin.trim() != ''">
+		and create_time >= #{createTimeBegin}
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd.trim() != ''">
+		and create_time &lt;= #{createTimeEnd}
+		</if>
+		<if test="updateTimeBegin != null and updateTimeBegin.trim() != ''">
+		and update_time >= #{updateTimeBegin}
+		</if>
+		<if test="updateTimeEnd != null and updateTimeEnd.trim() != ''">
+		and update_time &lt;= #{updateTimeEnd}
+		</if>
+		<if test="status != null">
+		and status = #{status}
+		</if>
+	</sql>
+	
+	<insert id="insert" parameterType="com.song.framework.dao.module.AdminUser" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO 
+		<include refid="table" />
+	<![CDATA[
+		(
+        	user_name ,
+        	mobile ,
+        	email ,
+        	login_pwd ,
+        	create_user ,
+        	create_time ,
+        	update_time ,
+        	status 
+		) VALUES (
+        	#{userName,jdbcType=VARCHAR} ,
+        	#{mobile,jdbcType=VARCHAR} ,
+        	#{email,jdbcType=VARCHAR} ,
+        	#{loginPwd,jdbcType=VARCHAR} ,
+        	#{createUser,jdbcType=VARCHAR} ,
+        	#{createTime,jdbcType=TIMESTAMP} ,
+        	#{updateTime,jdbcType=TIMESTAMP} ,
+        	#{status,jdbcType=TINYINT} 
+		)
+	]]>
+	</insert>
+	
+	<insert id="batchInsert" parameterType="com.song.framework.dao.module.AdminUser">
+		INSERT INTO	
+		<include refid="table" />
+		(
+        	user_name ,
+        	mobile ,
+        	email ,
+        	login_pwd ,
+        	create_user ,
+        	create_time ,
+        	update_time ,
+        	status 
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+		(
+        	#{item.userName,jdbcType=VARCHAR} ,
+        	#{item.mobile,jdbcType=VARCHAR} ,
+        	#{item.email,jdbcType=VARCHAR} ,
+        	#{item.loginPwd,jdbcType=VARCHAR} ,
+        	#{item.createUser,jdbcType=VARCHAR} ,
+        	#{item.createTime,jdbcType=TIMESTAMP} ,
+        	#{item.updateTime,jdbcType=TIMESTAMP} ,
+        	#{item.status,jdbcType=TINYINT} 
+        )
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterType="com.song.framework.dao.module.AdminUser">
+		UPDATE 
+		<include refid="table" />
+		<set>
+			<if test="userName != null">
+	        user_name = #{userName,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="mobile != null">
+	        mobile = #{mobile,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="email != null">
+	        email = #{email,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="loginPwd != null">
+	        login_pwd = #{loginPwd,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="createUser != null">
+	        create_user = #{createUser,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="createTime != null">
+	        create_time = #{createTime,jdbcType=TIMESTAMP} ,
+	        </if>
+			<if test="updateTime != null">
+	        update_time = #{updateTime,jdbcType=TIMESTAMP} ,
+	        </if>
+			<if test="status != null">
+	        status = #{status,jdbcType=TINYINT} ,
+	        </if>
+	    </set>
+		WHERE 
+	        id = #{id} 
+	</update>
+	
+	<update id="updateByVersion" parameterType="com.song.framework.dao.module.AdminUser">
+		UPDATE 
+		<include refid="table" />
+		<set>
+			<if test="userName != null">
+	        user_name = #{userName,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="mobile != null">
+	        mobile = #{mobile,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="email != null">
+	        email = #{email,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="loginPwd != null">
+	        login_pwd = #{loginPwd,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="createUser != null">
+	        create_user = #{createUser,jdbcType=VARCHAR} ,
+	        </if>
+			<if test="createTime != null">
+	        create_time = #{createTime,jdbcType=TIMESTAMP} ,
+	        </if>
+			<if test="updateTime != null">
+	        update_time = #{updateTime,jdbcType=TIMESTAMP} ,
+	        </if>
+			<if test="status != null">
+	        status = #{status,jdbcType=TINYINT} ,
+	        </if>
+	        version = #{version} + 1 
+	    </set>
+		WHERE 
+	        id = #{id} 
+	        AND version = #{version}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM 
+		<include refid="table" />
+	<![CDATA[
+		WHERE
+        id = #{id} 
+	]]>
+	</delete>
+    
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	    SELECT 
+	    <include refid="columns"/> 
+		FROM 
+		<include refid="table" />
+	<![CDATA[ 
+		WHERE 
+        id = #{id} 
+	]]>
+	</select>
+	 
+	<select id="selectCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+    	SELECT count(1) 
+    	FROM 
+    	<include refid="table" />
+ 		<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+    
+	<select id="selectList" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT 
+		<include refid="columns"/>  
+		FROM 
+    	<include refid="table" />
+		<where>
+			<include refid="condition_sql" />
+		</where> 
+	    <if test="orderByParam != null and orderByParam != ''"> 
+			<![CDATA[ ORDER BY  ${orderByParam}  ${sortByParam}]]>
+		</if>
+		<if test="orderByParam == null or  orderByParam == ''"> 
+			<![CDATA[ ORDER BY ID DESC]]>
+		</if>
+		<if test="size != null and size != '' and skip != null and skip != ''">
+        	<![CDATA[ LIMIT #{skip},#{size} ]]>
+        </if>
+        <if test="size == null or size == '' or skip == null or skip == ''">
+        	<![CDATA[ LIMIT 1 ]]>
+        </if>
+	</select>
+<select id="findByUserNameAndPwd" parameterType="hashmap"  resultMap="BaseResultMap">
+	select * from hepet_admin_user where user_name=#{userName} and login_pwd=#{loginPwd}
+</select>  
+<update id="modifyLoginPwd" parameterType="hashmap">
+	update hepet_admin_user
+	<set>
+		<if test="newPwd != null">login_pwd=#{newPwd},</if>
+		update_time=now()
+	</set>
+	where id=#{userId} and login_pwd=#{oldPwd}
+</update>
+</mapper>

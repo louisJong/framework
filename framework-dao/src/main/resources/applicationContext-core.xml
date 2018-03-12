@@ -28,17 +28,17 @@
 	
 	<!-- 启动对@Aspectj的支持 true为cglib，false为jdk代理，为true的话，会导致拦截不了mybatis的mapper-->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
-       	<bean id="mchealthDataSourceWriter" class="com.alibaba.druid.pool.DruidDataSource"  init-method="init" destroy-method="close">
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"  init-method="init" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password"  value="${jdbc.password}"/>
+		<property name="url" value="${db.jdbc.url}" />
+		<property name="username" value="${db.jdbc.username}" />
+		<property name="password"  value="${db.jdbc.password}"/>
 		<!-- 配置过滤 -->
 		<property name="filters" value="stat" />
 		<!-- 配置初始化大小 -->
-		<property name="initialSize" value="${jdbc.initialSize}" />
+		<property name="initialSize" value="${db.jdbc.initialSize}" />
 		<!-- 配置初始化最大 连接数 -->
-		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="maxActive" value="${db.jdbc.maxActive}" />
 		<!-- 配置初始化最小连接数 -->
 		<property name="minIdle" value="2" />
 		<!-- 配置获取连接等待超时的时间 -->
@@ -60,22 +60,22 @@
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <property name="basePackage" value="${mybatis.mapper.pkg:com.song.framework.dao}"/>
+        <property name="basePackage" value="${mybatis.mapper.pkg:com.song}"/>
         <property name="markerInterface" value="com.song.framework.dao.ProtoMapper"/>
     </bean>
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="mapperLocations" value="classpath*:mybatis/**/*.xml"/>
-    </bean>
+        <property name="mapperLocations" value="classpath*:mybatis/*.xml"/>
+    </bean> 
 	
 	<!-- 支持 @Transactional 标记 (默认只回滚RuntimeException的异常，可以通过@Transactional(rollbackFor=Exception.class)来改变)--> 
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-	    <property name="dataSource" ref="mchealthDataSourceWriter" />
+	    <property name="dataSource" ref="dataSource" />
 	    <property name="defaultTimeout" value="300" />
 	</bean>
 
-	<bean id="mchealthTransactionTemplate"  
+	<bean id="transactionTemplate"  
         class="org.springframework.transaction.support.TransactionTemplate">  
         <property name="transactionManager">  
             <ref local="transactionManager" />  

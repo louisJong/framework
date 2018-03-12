@@ -12,7 +12,7 @@ import com.song.framework.admin.service.UserService;
 import com.song.framework.common.utils.JsonUtils;
 import com.song.framework.common.utils.MD5Util;
 import com.song.framework.dao.AdminUserMapper;
-import com.song.framework.dao.model.AdminUser;
+import com.song.framework.dao.module.AdminUser;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 		}
 		JSONObject result = JsonUtils.commonJsonReturn();
 		
-		return JsonUtils.setBody(result, "userId", user.getId());
+		return JsonUtils.setBody(result, "user",user);
 	}
 
 	@Override

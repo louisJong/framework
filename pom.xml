@@ -34,7 +34,18 @@
 			</plugins>
       </pluginManagement>
    </build>
-  <dependencies>
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>com.song</groupId>
+  			<artifactId>framework-common</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.song</groupId>
+  			<artifactId>framework-dao</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -139,6 +150,11 @@
 			<artifactId>spring-expression</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -196,11 +212,11 @@
 			<type>jar</type>
 		</dependency>
 
-			<dependency>
+		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>5.1.31</version>
-	  </dependency>
+	 	 </dependency>
 		
 		<dependency>
 			<groupId>commons-httpclient</groupId>
@@ -213,11 +229,14 @@
 		  <artifactId>mail</artifactId>
 		  <version>1.4.5</version>
 		</dependency>
-  </dependencies>
+		</dependencies>
+  </dependencyManagement>
   <modules>
     <module>framework-common</module>
     <module>framework-dao</module>
     <module>framework-admin</module>
   	<module>framework-web</module>
+    <module>framework-gen</module>
+    <module>framework-test</module>
   </modules>
 </project>

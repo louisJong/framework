@@ -1,9 +1,7 @@
 package com.song.framework.admin.controller;
 
 import java.io.IOException;
-import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +18,7 @@ import com.song.framework.admin.service.UserService;
 import com.song.framework.admin.utils.WebUtil;
 import com.song.framework.common.utils.JsonUtils;
 import com.song.framework.common.utils.VerifyCodeUtils;
+import com.song.framework.dao.module.AdminUser;
 
 @Controller
 public class UserController {
@@ -48,7 +47,7 @@ public class UserController {
 	
 	@RequestMapping(value="/admin/user/login")
 	@ResponseBody
-	public String userLogin(HttpServletRequest request , HttpServletResponse response , HttpSession session ,
+	public String userLogin(HttpSession session ,
 			@RequestParam(value="imgVerify") String imgVerify , 
 			@RequestParam(value="userName") String userName,
 			@RequestParam(value="loginPwd") String loginPwd){
@@ -61,12 +60,8 @@ public class UserController {
 		//用户账户名和密码验证
 		JSONObject loginResult = userService.login(userName, loginPwd);
 		if(JsonUtils.equalDefSuccCode(loginResult)){
-			@SuppressWarnings("unchecked")
-			Map<String , Object> loginMap = loginResult.getJSONObject("body").getObject("loginMap", Map.class);
-			session.setAttribute("userType", (String)loginMap.get("userType"));
-			session.setAttribute("userId", loginMap.get("userId"));
-			session.setAttribute("userName", userName);
-			session.setAttribute("needChangePwd",  loginMap.get("needChangePwd"));
+			AdminUser user = loginResult.getJSONObject("body").getObject("user", AdminUser.class);
+			session.setAttribute("user", user);
 		}
 		return loginResult.toJSONString();
 	}
@@ -86,12 +81,12 @@ public class UserController {
 	
 	@RequestMapping(value="/admin/user/modify_pwd")
 	@ResponseBody
-	public String modify_pwd(HttpServletRequest request , HttpServletResponse response ,
+	public String modify_pwd(HttpSession session,
 												@RequestParam(value="oldPwd") String oldPwd,
 												@RequestParam(value="newPwd") String newPwd
 												){
 		try{
-			JSONObject result =  userService.modifyLoginPwd(WebUtil.getUserId(request) , oldPwd , newPwd);
+			JSONObject result =  userService.modifyLoginPwd(WebUtil.getUserId(session) , oldPwd , newPwd);
 	    	 return result.toJSONString();
     	}catch(Exception e){
 			logger.error("modify_pwd error " ,e);

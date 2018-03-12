@@ -3,7 +3,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.song.framework.dao.model.AdminUser;
+import com.song.framework.dao.module.AdminUser;
 
 @Repository
 public interface AdminUserMapper extends ProtoMapper<AdminUser> {

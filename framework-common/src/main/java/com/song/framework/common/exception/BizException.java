@@ -1,13 +1,13 @@
 package com.song.framework.common.exception;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+
 public  class BizException extends RuntimeException {
 	/**
 	 */
 	private static final long serialVersionUID = -1708643103932249972L;
 
-	protected final Log logger = LogFactory.getLog(this.getClass());
+	protected final Logger logger = Logger.getLogger(BizException.class);
 
 	/** 异常信息 */
 	private String msg;

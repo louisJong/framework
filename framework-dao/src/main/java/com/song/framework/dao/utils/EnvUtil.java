@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Properties;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 
 public class EnvUtil {
 	//#dev,test, pre pro
@@ -40,7 +43,4 @@ public class EnvUtil {
 		return "pro".equals(getValue("sys.env")) ? true :false;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(getValue("jdbc.url"));
-	}
 }
