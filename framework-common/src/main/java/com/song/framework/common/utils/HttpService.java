@@ -131,7 +131,7 @@ public class HttpService {
 		return responseBody.toString();
 	}
 	
-	public String doPost(String url,Map<String, String> map,String ...responseEncode) throws IOException {
+	public String doPost(String url,Map<String, String> map,String ...responseEncode) throws Exception {
 		PostMethod postMethod = null;
 		InputStream in = null;
 		StringBuffer responseBody = new StringBuffer();
@@ -231,9 +231,9 @@ public class HttpService {
 	 * @param data
 	 * @param responseEncode
 	 * @return
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	public String doPostRequestEntity(String url,String data,String ...responseEncode) throws IOException {
+	public String doPostRequestEntity(String url,String data,String ...responseEncode) throws Exception {
 		PostMethod postMethod = null;
 		StringBuffer responseBody = new StringBuffer();
 		InputStream in = null;
