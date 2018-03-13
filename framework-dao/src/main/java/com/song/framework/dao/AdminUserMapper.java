@@ -3,6 +3,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.song.framework.dao.base.ProtoMapper;
 import com.song.framework.dao.module.AdminUser;
 
 @Repository
