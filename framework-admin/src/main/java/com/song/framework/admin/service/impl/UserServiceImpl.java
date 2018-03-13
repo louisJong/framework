@@ -3,9 +3,13 @@ package com.song.framework.admin.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSONObject;
 import com.song.framework.admin.service.UserService;
@@ -41,8 +45,9 @@ public class UserServiceImpl implements UserService {
 			return JsonUtils.commonJsonReturn("0003" , "账户不可用");
 		}
 		JSONObject result = JsonUtils.commonJsonReturn();
-		
-		return JsonUtils.setBody(result, "user",user);
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		request.getSession().setAttribute("user", user);
+		return result;
 	}
 
 	@Override

@@ -58,12 +58,7 @@ public class UserController {
 			return result.toJSONString();
 		}
 		//用户账户名和密码验证
-		JSONObject loginResult = userService.login(userName, loginPwd);
-		if(JsonUtils.equalDefSuccCode(loginResult)){
-			AdminUser user = loginResult.getJSONObject("body").getObject("user", AdminUser.class);
-			session.setAttribute("user", user);
-		}
-		return loginResult.toJSONString();
+		return userService.login(userName, loginPwd).toJSONString();
 	}
 	
 	@RequestMapping(value="/admin/user/logout")

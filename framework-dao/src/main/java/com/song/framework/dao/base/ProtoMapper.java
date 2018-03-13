@@ -1,4 +1,4 @@
-package com.song.framework.dao;
+package com.song.framework.dao.base;
 
 import java.util.List;
 import java.util.Map;
