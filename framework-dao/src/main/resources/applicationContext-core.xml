@@ -26,13 +26,7 @@
           <context:include-filter  type="annotation"  expression="org.springframework.stereotype.Component"    />  
 	</context:component-scan>
 	
-	<!-- 启动对@Aspectj的支持 true为cglib，false为jdk代理，为true的话，会导致拦截不了mybatis的mapper-->
-	<aop:aspectj-autoproxy proxy-target-class="true"/>
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"  init-method="init" destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-		<property name="url" value="${db.jdbc.url}" />
-		<property name="username" value="${db.jdbc.username}" />
-		<property name="password"  value="${db.jdbc.password}"/>
+    <bean id="parentDataSource" class="com.alibaba.druid.pool.DruidDataSource"  init-method="init" destroy-method="close" abstract="true">
 		<!-- 配置过滤 -->
 		<property name="filters" value="stat" />
 		<!-- 配置初始化大小 -->
@@ -57,6 +51,32 @@
 		<!-- 如果是Oracle/DB2/SQL Server之类支持游标的数据库需要加上一下配置 -->
 		<property name="maxPoolPreparedStatementPerConnectionSize" value="50"/>
 	</bean>
+	
+	<!-- 配置数据源-->
+    <bean id="masterDataSource" parent="parentDataSource">
+    	<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="${db.jdbc.url}" />
+		<property name="username" value="${db.jdbc.username}" />
+		<property name="password"  value="${db.jdbc.password}"/>
+    </bean>
+
+    <bean id="slaveDataSource" parent="parentDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="${db.jdbc.url}" />
+		<property name="username" value="${db.jdbc.username}" />
+		<property name="password"  value="${db.jdbc.password}"/>
+    </bean>
+    
+    <bean id="dataSource" class="com.song.framework.dao.base.routing.DynamicRoutingDataSource">
+        <property name="targetDataSources">
+            <map key-type="com.song.framework.dao.base.routing.RoutingStrategy">
+                <entry key="WRITE" value-ref="masterDataSource"/>
+                <entry key="READ" value-ref="slaveDataSource"/>
+            </map>
+        </property>
+        <!-- 默认目标数据源为主库数据源 -->
+        <property name="defaultTargetDataSource" ref="masterDataSource"/>
+    </bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
@@ -71,7 +91,7 @@
 	<!-- 支持 @Transactional 标记 (默认只回滚RuntimeException的异常，可以通过@Transactional(rollbackFor=Exception.class)来改变)--> 
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-	    <property name="dataSource" ref="dataSource" />
+	    <property name="dataSource" ref="masterDataSource" />
 	    <property name="defaultTimeout" value="300" />
 	</bean>
 
@@ -84,4 +104,16 @@
         <property name="propagationBehaviorName" value="PROPAGATION_REQUIRES_NEW"/>  
        	<property name="timeout" value="300"/>
 	</bean> 
+	
+	<!-- 启动对@Aspectj的支持 true为cglib，false为jdk代理，为true的话，会导致拦截不了mybatis的mapper-->
+	<aop:aspectj-autoproxy/>
+    <bean id="readWriteSeparateAspect" class="com.song.framework.dao.base.routing.DBReadWriteSeparateAspect" />
+
+    <aop:config>
+        <aop:aspect ref="readWriteSeparateAspect">
+            <aop:pointcut id="rw" expression="execution(* com.song.framework.dao.*Mapper.*(..))" />
+            <aop:before pointcut-ref="rw" method="before" />
+            <aop:after pointcut-ref="rw" method="after"/>
+        </aop:aspect>
+    </aop:config>
 </beans> 
