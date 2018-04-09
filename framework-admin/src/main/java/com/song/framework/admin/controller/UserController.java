@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.song.framework.admin.service.UserService;
 import com.song.framework.admin.utils.WebUtil;
-import com.song.framework.common.utils.JsonUtils;
-import com.song.framework.common.utils.VerifyCodeUtils;
+import com.song.framework.support.utils.JsonUtils;
+import com.song.framework.support.utils.VerifyCodeUtils;
 
 @Controller
 public class UserController {

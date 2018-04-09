@@ -3,10 +3,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.song.framework.dao.base.ProtoMapper;
-import com.song.framework.dao.base.routing.RoutingDataSource;
-import com.song.framework.dao.base.routing.RoutingStrategy;
 import com.song.framework.dao.module.AdminUser;
+import com.song.framework.support.datasource.routing.RoutingDataSource;
+import com.song.framework.support.datasource.routing.RoutingStrategy;
+import com.song.framework.support.proto.ProtoMapper;
 
 @Repository
 public interface AdminUserMapper extends ProtoMapper<AdminUser> {

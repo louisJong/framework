@@ -1,7 +1,7 @@
 package com.song.framework.dao.module ;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.song.framework.dao.base.ProtoBean;
+import com.song.framework.support.proto.ProtoBean;
 @SuppressWarnings("serial")
 public class AdminUser  extends ProtoBean {
   /** 用户名 */
