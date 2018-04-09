@@ -13,13 +13,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSONObject;
 import com.song.framework.admin.service.UserService;
-import com.song.framework.common.utils.JsonUtils;
-import com.song.framework.common.utils.MD5Util;
 import com.song.framework.dao.AdminUserMapper;
 import com.song.framework.dao.module.AdminUser;
+import com.song.framework.support.proto.AbstractProtoService;
+import com.song.framework.support.proto.ProtoMapper;
+import com.song.framework.support.utils.JsonUtils;
+import com.song.framework.support.utils.MD5Util;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends AbstractProtoService<AdminUser> implements UserService {
 
 	private static final Logger logger  = Logger.getLogger(UserServiceImpl.class);
 	
@@ -61,6 +63,11 @@ public class UserServiceImpl implements UserService {
 			return JsonUtils.commonJsonReturn("0001", "原始密码错误");
 		}
 		return JsonUtils.commonJsonReturn();
+	}
+
+	@Override
+	protected ProtoMapper<AdminUser> getMapper() {
+		return userDao;
 	}
 
 }

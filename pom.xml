@@ -15,7 +15,7 @@
   	<dependencies>
   		<dependency>
   			<groupId>com.song</groupId>
-  			<artifactId>framework-common</artifactId>
+  			<artifactId>framework-support</artifactId>
   			<version>${project.version}</version>
   		</dependency>
   		<dependency>
@@ -303,11 +303,11 @@
 		</dependencies>
 	</dependencyManagement>
   <modules>
-    <module>framework-common</module>
     <module>framework-dao</module>
     <module>framework-admin</module>
   	<module>framework-web</module>
     <module>framework-gen</module>
     <module>framework-test</module>
+    <module>framework-support</module>
   </modules>
 </project>
