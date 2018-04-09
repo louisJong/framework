@@ -67,9 +67,9 @@
 		<property name="password"  value="${db.jdbc.password}"/>
     </bean>
     
-    <bean id="dataSource" class="com.song.framework.dao.base.routing.DynamicRoutingDataSource">
+    <bean id="dataSource" class="com.song.framework.dao.routing.DynamicRoutingDataSource">
         <property name="targetDataSources">
-            <map key-type="com.song.framework.dao.base.routing.RoutingStrategy">
+            <map key-type="com.song.framework.support.datasource.routing.RoutingStrategy">
                 <entry key="WRITE" value-ref="masterDataSource"/>
                 <entry key="READ" value-ref="slaveDataSource"/>
             </map>
@@ -81,7 +81,7 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <property name="basePackage" value="${mybatis.mapper.pkg:com.song}"/>
-        <property name="markerInterface" value="com.song.framework.dao.base.ProtoMapper"/>
+        <property name="markerInterface" value="com.song.framework.support.proto.ProtoMapper"/>
     </bean>
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -107,7 +107,7 @@
 	
 	<!-- 启动对@Aspectj的支持 true为cglib，false为jdk代理，为true的话，会导致拦截不了mybatis的mapper-->
 	<aop:aspectj-autoproxy/>
-    <bean id="readWriteSeparateAspect" class="com.song.framework.dao.base.routing.DBReadWriteSeparateAspect" />
+    <bean id="readWriteSeparateAspect" class="com.song.framework.dao.routing.DBReadWriteSeparateAspect" />
 
     <aop:config>
         <aop:aspect ref="readWriteSeparateAspect">
