@@ -116,7 +116,7 @@
 	        AND version = ${'#{'}version${'}'}
 	</update>
 
-	<delete id="delete" parameterType="java.lang.Integer">
+	<delete id="delete" parameterType="java.lang.Long">
 		DELETE FROM 
 		<include refid="table" />
 	<![CDATA[
@@ -127,7 +127,7 @@
 	]]>
 	</delete>
     
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	    SELECT 
 	    <include refid="columns"/> 
 		FROM 
@@ -140,7 +140,7 @@
 	]]>
 	</select>
 	 
-	<select id="selectCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
     	SELECT count(1) 
     	FROM 
     	<include refid="table" />
@@ -163,10 +163,10 @@
 		<if test="orderByParam == null or  orderByParam == ''"> 
 			<![CDATA[ ORDER BY ID DESC]]>
 		</if>
-		<if test="size != null and size != '' and skip != null and skip != ''">
+		<if test="size != null and skip != null">
         	<![CDATA[ LIMIT ${'#{'}skip${'}'},${'#{'}size${'}'} ]]>
         </if>
-        <if test="size == null or size == '' or skip == null or skip == ''">
+        <if test="size == null  or skip == null">
         	<![CDATA[ LIMIT 1 ]]>
         </if>
 	</select>
